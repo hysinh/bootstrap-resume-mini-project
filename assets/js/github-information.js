@@ -28,11 +28,14 @@ function fetchGitHubInformation(event) {
         </div>`);
 
     $.when(
-        $.getJSON(`https://api.github.com/users/${username}`)
+        $.getJSON(`https://api.github.com/users/${username}`),
+        $.getJSON(`https://api.github.com/users/${username}/repos`) // will list the repositories of that user
     ).then(
-        function(response) { // response = response we get back from our getJSON() method
-            var userData = response;
-            $("#gh-user-data").html(userInformationHTML(userData)); // user jQuery selectos to select the gh-user-data div and set the HTML to the results of another function - userInformationHTML()
+        function(firstResponse, secondResponse) { // response = response we get back from our getJSON() method
+            var userData = firstResponse[0];
+            var repoData = secondResponse[0];
+            $("#gh-user-data").html(userInformationHTML(userData)); // use jQuery selects to select the gh-user-data div and set the HTML to the results of another function - userInformationHTML()
+            $("#gh-repo-data").html(repoInformationHTML(repoData));
         }, function(errorResponse) {
             if (errorResponse.status === 404) {
                 $("#gh-user-data").html(`<h2>No info found for user ${username}</h2>`);
