@@ -37,6 +37,9 @@ function repoInformationHTML(repos) {
 }
 
 function fetchGitHubInformation(event) {
+    $("#gh-user-data").html(""); //sets it to an empty string 
+    $("#gh-repo-data").html("");
+
     var username = $("#gh-username").val();
     if (!username) {
         $("#gh-user-data").html(`<h2>Please enter a GitHub username</h2>`);
@@ -68,3 +71,9 @@ function fetchGitHubInformation(event) {
         });
     
 }
+
+// use the documentReady() in jQuery and execute the fetchGitHubInformation() 
+// when the DOM is fully loaded
+// by adding this one line, the octocat profile is automatically displayed
+
+$(document).ready(fetchGitHubInformation);
